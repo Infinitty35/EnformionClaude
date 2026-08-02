@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enformion Search</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>People Search</h1>
+    <p class="subtitle">Search by name, phone, or email via the Enformion API</p>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="name">Name</button>
+      <button class="tab-btn" data-tab="phone">Phone</button>
+      <button class="tab-btn" data-tab="email">Email</button>
+    </div>
+
+    <form id="name-form" class="tab-panel active">
+      <label>First name<input type="text" name="firstName" required></label>
+      <label>Middle name<input type="text" name="middleName"></label>
+      <label>Last name<input type="text" name="lastName" required></label>
+      <label>City<input type="text" name="city"></label>
+      <label>State<input type="text" name="state" maxlength="2" placeholder="CA"></label>
+      <label>Date of birth<input type="text" name="dob" placeholder="MM/DD/YYYY"></label>
+      <button type="submit">Search</button>
+    </form>
+
+    <form id="phone-form" class="tab-panel">
+      <label>Phone number<input type="tel" name="phone" placeholder="5551234567" required></label>
+      <button type="submit">Search</button>
+    </form>
+
+    <form id="email-form" class="tab-panel">
+      <label>Email address<input type="email" name="email" required></label>
+      <button type="submit">Search</button>
+    </form>
+
+    <div id="status"></div>
+    <pre id="results"></pre>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
