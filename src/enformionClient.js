@@ -1,12 +1,9 @@
 const axios = require('axios');
 const config = require('./config');
 
-// Endpoint paths and galaxy-search-type values below are a best-effort
-// mapping of Enformion's API (unverified -- see README "Verify against the
-// real docs"). If a search returns 404/400 from Enformion, check
-// https://enformiongo.readme.io/reference/overview and adjust the
-// ENFORMION_PATH_* / ENFORMION_SEARCH_TYPE_* env vars in src/config.js
-// accordingly -- no other code needs to change.
+// Paths and galaxy-search-type values come from the EnformionGO reference:
+// Person Search, Caller ID, Email ID, and Contact Enrichment.
+// Override them with ENFORMION_PATH_* / ENFORMION_SEARCH_TYPE_* if needed.
 
 const client = axios.create({
   baseURL: config.enformion.baseUrl,
@@ -41,5 +38,8 @@ module.exports = {
   },
   searchEmail(body) {
     return callEnformion(config.enformion.paths.email, config.enformion.searchTypes.email, body);
+  },
+  searchContact(body) {
+    return callEnformion(config.enformion.paths.contact, config.enformion.searchTypes.contact, body);
   },
 };

@@ -15,13 +15,15 @@ module.exports = {
     apPassword: process.env.ENFORMION_API_PASSWORD || '',
     paths: {
       person: process.env.ENFORMION_PATH_PERSON || '/PersonSearch',
-      phone: process.env.ENFORMION_PATH_PHONE || '/PhoneSearch',
-      email: process.env.ENFORMION_PATH_EMAIL || '/EmailSearch',
+      phone: process.env.ENFORMION_PATH_PHONE || '/Phone/Enrich',
+      email: process.env.ENFORMION_PATH_EMAIL || '/Email/Enrich',
+      contact: process.env.ENFORMION_PATH_CONTACT || '/Contact/Enrich',
     },
     searchTypes: {
-      person: process.env.ENFORMION_SEARCH_TYPE_PERSON || 'DevAPIPersonSearch',
-      phone: process.env.ENFORMION_SEARCH_TYPE_PHONE || 'DevAPIPhoneSearch',
-      email: process.env.ENFORMION_SEARCH_TYPE_EMAIL || 'DevAPIEmailSearch',
+      person: process.env.ENFORMION_SEARCH_TYPE_PERSON || 'Person',
+      phone: process.env.ENFORMION_SEARCH_TYPE_PHONE || 'DevAPICallerID',
+      email: process.env.ENFORMION_SEARCH_TYPE_EMAIL || 'DevAPIEmailID',
+      contact: process.env.ENFORMION_SEARCH_TYPE_CONTACT || 'DevAPIContactEnrich',
     },
   },
 };

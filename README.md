@@ -3,28 +3,20 @@
 A small Express backend that wraps the Enformion people-search API, plus a
 one-page web UI to search by name, phone, or email.
 
-## IMPORTANT: verify against the real docs before going live
+## Enformion mapping
 
-This environment's network policy blocked outbound access to
-`enformiongo.readme.io` and `enformion.com` while this project was built, so
-the integration below (endpoint paths, header names, request field names)
-is based on general knowledge of Enformion's API rather than a fetch of the
-live docs. **Before using this against real data**, open
-https://enformiongo.readme.io/reference/overview yourself and confirm:
+Calls use `https://devapi.enformion.com` and the headers `galaxy-ap-name`,
+`galaxy-ap-password`, and `galaxy-search-type`, as described in the
+[EnformionGO quickstart](https://enformiongo.readme.io/reference/overview).
+Paths and search types are set in `src/config.js` and can be overridden
+from `.env`. A 4xx body from Enformion is returned unchanged.
 
-- Base URL (`ENFORMION_BASE_URL` in `.env`, currently defaults to
-  `https://devapi.enformion.com`)
-- Endpoint paths for person/phone/email search (`ENFORMION_PATH_*`)
-- The `galaxy-search-type` header value expected per endpoint
-  (`ENFORMION_SEARCH_TYPE_*`)
-- The exact JSON field names each endpoint expects (`FirstName`, `LastName`,
-  `Phone`, `Email`, etc.) -- these are set in `src/routes/search.js`
-
-Everything above is centralized in `src/config.js` (overridable via `.env`)
-and `src/routes/search.js`, so if the real docs differ, that's the only
-place to change. If a search returns a 4xx from Enformion, the error body
-is passed straight through to the UI/response so you can see exactly what
-Enformion rejected.
+| Route | Path | galaxy-search-type | Reference |
+| --- | --- | --- | --- |
+| name | `/PersonSearch` | `Person` | [Person Search](https://enformiongo.readme.io/reference/person-search) |
+| phone | `/Phone/Enrich` | `DevAPICallerID` | [Caller ID](https://enformiongo.readme.io/reference/caller-id) |
+| email | `/Email/Enrich` | `DevAPIEmailID` | [Email ID](https://enformiongo.readme.io/reference/email-id) |
+| contact | `/Contact/Enrich` | `DevAPIContactEnrich` | [Contact Enrichment](https://enformiongo.readme.io/reference/contact-enrichment) |
 
 ## Setup
 
@@ -42,9 +34,10 @@ Then open http://localhost:3000 for the web UI.
 All endpoints are `POST`, accept and return JSON, and proxy straight to
 Enformion (rate-limited to 30 requests/minute per IP to protect API usage).
 
-- `POST /api/search/name` -- body: `{ firstName, lastName, middleName?, city?, state?, dob? }`
-- `POST /api/search/phone` -- body: `{ phone }` (any format, digits are extracted; must be 10 digits)
+- `POST /api/search/name` -- body: `{ firstName, lastName, middleName?, city?, state?, dob? }`. Sent as a Person Search with `Page: 1` and `ResultsPerPage: 10`. City and state are sent as `Addresses[].AddressLine2`.
+- `POST /api/search/phone` -- body: `{ phone }` (any format, digits are extracted; must be 10 digits). Sent to Caller ID as `###-###-####`.
 - `POST /api/search/email` -- body: `{ email }`
+- `POST /api/search/contact` -- body with at least two of `firstName`/`lastName`, `phone`, `email`, and `addressLine1`/`addressLine2`. This is the quickstart Contact Enrichment call.
 
 `GET /api/health` returns `{ "status": "ok" }`.
 
